@@ -62,16 +62,31 @@ function App() {
       />
       <button className="btn-add" onClick={addTask}>Add Task</button>
       <ul>
-      {tasks.map((task) => {
-  console.log("Rendering task:", task);
-  return (
-    <li key={task.id}>
-      {task.title} <button onClick={() => deleteTask(task.id)}>❌</button>
-    </li>
-  );
-})}
+  {[...tasks]
+    .sort((a, b) => a.completed - b.completed) // false (0) dulu, true (1) di bawah
+    .map((task) => {
+      console.log("Rendering task:", task);
+      return (
+        <li key={task.id} style={{ opacity: task.completed ? 0.6 : 1 }}>
+  <input
+    type="checkbox"
+    checked={task.completed}
+    onChange={() => toggleComplete(task)}
+    style={{ marginRight: 10 }}
+    className="custom-checkbox"
+  />
+  <span style={{ textDecoration: task.completed ? "line-through" : "none" }}>
+    {task.title}
+  </span>
+  <button onClick={() => deleteTask(task.id)} style={{ marginLeft: 10 }}>
+    ❌
+  </button>
+</li>
 
-      </ul>
+      );
+    })}
+</ul>
+
 
     </div>
   );
